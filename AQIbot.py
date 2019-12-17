@@ -39,6 +39,13 @@ def aqilevelcheck (aqinumber):
 	else:
 		return ("There seems to be an error or the Air Quality Index is out of our range.")
 
+def airnowcity (city):
+	req = requests.get('https://api.waqi.info/feed/'+city+'/?token='+APIToken)
+	reqdictype = json.loads(request.text)
+	datatag = reqdictype.get('data')
+	aqicity = datatag.get('aqi')
+	return (aqicity)
+	
 def airnowregions (city):
 	request = requests.get('https://api.waqi.info/search/?token='+APIToken+'&keyword='+city)
 	res = json.loads(request.text)
@@ -61,6 +68,13 @@ def airnowregions (city):
     		finalstr = finalstr + stations2[i] +" :" + stations2[i+1] +"\n"
 	return("For" + city + "regions, we have results below: \n" + finalstr)
 	
+def aircheck (update, context):
+	cityforcheck = update.message.text
+	aqinow = airnowcity (cityforcheck)
+	airlevelnow = aqilevelcheck (aqinow)
+	# AQI num and it's level (good / unhealthy /really bad) should be uploaded with a pic of that level now.
+	# A question from the user must be asked that does he/she want to see the region aqis? or not? if yes use airnowregions (city) function.
+
 def error(update, context):
 	logger.warning('Update "%s" caused error "%s"', update, context.error)
 
@@ -74,7 +88,7 @@ def main():
 	dp.add_handler(CommandHandler("start", start))
 	dp.add_handler(CommandHandler("help", help))
 	dp.add_handler(CommandHandler("aqiranges", aqiranges))
-	dp.add_handler(MessageHandler(Filters.text, definition))
+	dp.add_handler(MessageHandler(Filters.text, aircheck))
 
 	dp.add_error_handler(error)
 	
