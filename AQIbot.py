@@ -39,7 +39,7 @@ def aqilevelcheck (aqinumber):
 	elif aqinumber in range (301,501):
 		return ("Hazardous")
 	else:
-		return ("There seems to be an error or Air Quality Index is out of range.")
+		return ("There seems to be an error or the Air Quality Index is out of our range.")
 
 def airnowregions (city):
 	request = requests.get('https://api.waqi.info/search/?token='+token=botToken+'&keyword='+city)
