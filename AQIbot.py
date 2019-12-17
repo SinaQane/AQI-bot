@@ -4,11 +4,9 @@ import logging
 import json
 
 botToken = "TOKEN"
+APIToken = "TOKEN" #Get your private API key here: https://aqicn.org/api/
 
 bot = telegram.Bot(token=botToken)
-
-userWord = ""
-definitionResult = ""
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
 					level=logging.INFO)
@@ -42,7 +40,7 @@ def aqilevelcheck (aqinumber):
 		return ("There seems to be an error or the Air Quality Index is out of our range.")
 
 def airnowregions (city):
-	request = requests.get('https://api.waqi.info/search/?token='+botToken+'&keyword='+city)
+	request = requests.get('https://api.waqi.info/search/?token='+APIToken+'&keyword='+city)
 	res = json.loads(request.text)
 	resdic = res.get('data')
 	stations =[]
