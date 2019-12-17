@@ -2,9 +2,17 @@ import telegram
 import requests
 import logging
 import json
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+from telegram import InlineQueryResultArticle , ParseMode , InputTextMessageContent
+from telegram.ext import Updater, InlineQueryHandler, CommandHandler
+from telegram.utils.helpers import escape_markdown
+from urllib.request import urlopen
+from uuid import uuid4
+import urllib.request
+import sys
 
-botToken = "TOKEN"
-APIToken = "TOKEN" #Get your private API key here: https://aqicn.org/api/
+APIToken = "" #Get your private API key here: https://aqicn.org/api/
+botToken = sys.argv[1]
 
 bot = telegram.Bot(token=botToken)
 
@@ -40,7 +48,7 @@ def aqilevelcheck (aqinumber):
 		return ("There seems to be an error or the Air Quality Index is out of our range.")
 
 def airnowcity (city):
-	req = requests.get('https://api.waqi.info/feed/'+city+'/?token='+APIToken)
+	request = requests.get('https://api.waqi.info/feed/'+city+'/?token='+APIToken)
 	reqdictype = json.loads(request.text)
 	datatag = reqdictype.get('data')
 	aqicity = datatag.get('aqi')
@@ -72,6 +80,9 @@ def aircheck (update, context):
 	cityforcheck = update.message.text
 	aqinow = airnowcity (cityforcheck)
 	airlevelnow = aqilevelcheck (aqinow)
+	# print(airlevelnow)
+	update.message.reply_text(airlevelnow)
+	
 	# AQI num and it's level (good / unhealthy /really bad) should be uploaded with a pic of that level now.
 	# A question from the user must be asked that does he/she want to see the region aqis? or not? if yes use airnowregions (city) function.
 
