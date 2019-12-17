@@ -2,17 +2,19 @@ import telegram
 import requests
 import logging
 import json
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, InlineQueryHandler
 from telegram import InlineQueryResultArticle , ParseMode , InputTextMessageContent
-from telegram.ext import Updater, InlineQueryHandler, CommandHandler
 from telegram.utils.helpers import escape_markdown
 from urllib.request import urlopen
 from uuid import uuid4
 import urllib.request
 import sys
 
-APIToken = "" #Get your private API key here: https://aqicn.org/api/
+# Get your private API key here: https://aqicn.org/api/
+# Use the token as command arg in terminal, Example: python3 AQIbot.py botToken siteToken
+
 botToken = sys.argv[1]
+APIToken = sys.argv[2]
 
 bot = telegram.Bot(token=botToken)
 
@@ -79,13 +81,12 @@ def airnowregions (city):
 def aircheck (update, context):
 	cityforcheck = update.message.text
 	aqinow = airnowcity (cityforcheck)
-	airlevelnow = aqilevelcheck (aqinow)
-	# print(airlevelnow)
-	update.message.reply_text(airlevelnow)
-	
-	# AQI num and it's level (good / unhealthy /really bad) should be uploaded with a pic of that level now.
-	# A question from the user must be asked that does he/she want to see the region aqis? or not? if yes use airnowregions (city) function.
-
+	airlevelnow = aqilevelcheck(aqinow)
+	message = cityforcheck + " Air Quality Index is " + str(aqinow) + " And It's " + airlevelnow
+	img = open("img" + airlevelnow + ".JPG","rb")
+	update.message.reply_photo(photo=img,caption=message)
+	stations = airnowregions(cityforcheck)
+	print(stations)
 def error(update, context):
 	logger.warning('Update "%s" caused error "%s"', update, context.error)
 
