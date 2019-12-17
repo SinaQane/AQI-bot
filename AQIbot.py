@@ -42,7 +42,7 @@ def aqilevelcheck (aqinumber):
 		return ("There seems to be an error or the Air Quality Index is out of our range.")
 
 def airnowregions (city):
-	request = requests.get('https://api.waqi.info/search/?token='+token=botToken+'&keyword='+city)
+	request = requests.get('https://api.waqi.info/search/?token='+botToken+'&keyword='+city)
 	res = json.loads(request.text)
 	resdic = res.get('data')
 	stations =[]
