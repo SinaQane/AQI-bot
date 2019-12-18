@@ -104,7 +104,7 @@ def aircheck (update, context):
 		cityforcheck = update.message.text
 		regionslist = airnowregions(cityforcheck)
 		update.message.reply_text(regionslist)
-	dic[chat] = 0
+	dic[idd] = 0
 
 def error (update, context):
 	logger.warning('Update "%s" caused error "%s"', update, context.error)
