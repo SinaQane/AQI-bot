@@ -82,7 +82,7 @@ def airnowregions (city):
 	finalstr = ""
 	for i in range (0 , len(stations),2):
 			finalstr = finalstr + stations2[i] +" :" + stations2[i+1] +"\n"
-	return("For" + city + "regions, we have results below: \n" + finalstr)
+	return("For " + city + " regions, we have results below: \n" + finalstr)
 
 def regions(update, context):
 	idd = update.message.chat.id
