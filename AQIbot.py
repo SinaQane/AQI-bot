@@ -92,7 +92,7 @@ def airnowregions (city):
 
 	finalstr = ""
 	for i in range (0 , len(finalset),2):
-			finalstr = finalstr + finalset[i] +" :" + finalset[i+1] +"\n"
+			finalstr = finalstr + finalset[i] +": " + finalset[i+1] +"\n"
 		
 	return("For " +city+ " regions, we have results below: \n" + finalstr)
 
@@ -170,9 +170,6 @@ def error (update, context):
 
 def inlinequery(update, context):
 	query = update.inline_query.query
-	aqinow = airnowcity(query)
-	airlevelnow = aqilevelcheck(aqinow)
-	airpicword = airlevelnow.replace(" ", "%20")
 	request = requests.get('https://api.waqi.info/search/?token='+APIToken+'&keyword=' +query)
 	res = json.loads(request.text)
 	resdic = res.get('data')
@@ -190,6 +187,9 @@ def inlinequery(update, context):
 					message_text= "Sorry, We couldn't find: " + query))
 				]		
 	else :
+		aqinow = airnowcity(query)
+		airlevelnow = aqilevelcheck(aqinow)
+		airpicword = airlevelnow.replace(" ", "%20")
 		results =[
 			InlineQueryResultArticle(
 				id=uuid4(),
