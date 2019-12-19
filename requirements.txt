@@ -1,0 +1,9 @@
+requests
+logging
+json
+sys
+uuid
+urllib.request
+telegram
+telegram.ext
+telegram.utils.helpers
