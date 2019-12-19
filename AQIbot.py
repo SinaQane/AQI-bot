@@ -118,7 +118,7 @@ def airnowcity (city):
 		regs.append(stations2[i])
 		aqis.append(stations2[i+1])
 	defultaqicity = aqis[0]
-	return (defultaqicity)
+	return (int(defultaqicity))
 
 def regions(update, context):
 	idd = update.message.chat.id
