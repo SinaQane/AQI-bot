@@ -28,7 +28,7 @@ dic={}
 def start(update, context):
 	idd = update.message.chat.id
 	dic [idd] = 0
-	update.message.reply_text("Hello, for getting the Air Quality Index of your city, just send me the city's name, for more info press /info, to get started press /help, for getting tge list information of all available regions in your city press /regions")
+	update.message.reply_text("Hello, for getting the Air Quality Index of your city, just send me the city's name, for getting tge list information of all available regions in your city press /regions, to get started press /help, for more info press /info")
 
 def help(update, context):
 	update.message.reply_text("For getting the AQI of your city just type its name, for learning more about AQI number range and its meanings press /aqiranges, for further info visit: \n https://github.com/SinaQane/AQI-bot")
