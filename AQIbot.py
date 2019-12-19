@@ -28,13 +28,13 @@ dic={}
 def start(update, context):
 	idd = update.message.chat.id
 	dic [idd] = 0
-	update.message.reply_text("Hello, for getting the Air Quality Index of your city, just send me the city's name, for getting tge list information of all available regions in your city press /regions, to get started press /help, for more info press /info")
+	update.message.reply_text("Hello, for getting the Air Quality Index of your city, just send me the city's name, for getting the list of all available regions in your city press /regions, to get started press /help, for more info press /info")
 
 def help(update, context):
-	update.message.reply_text("For getting the AQI of your city just type its name, for learning more about AQI number range and its meanings press /aqiranges, for further info visit: \n https://github.com/SinaQane/AQI-bot")
+	update.message.reply_text("For getting the AQI of your city just type its name, for a more specific search press /regions, for further info visit: \n https://github.com/SinaQane/AQI-bot")
 
 def info(update, context):
- 	update.message.reply_text("The AQI is an index for reporting daily air quality. It tells you how clean or polluted your air is, and what associated health effects might be a concern for you. The AQI focuses on health effects you may experience within a few hours or days after breathing polluted air. By knowing it, we can prevent likely harms to our health, reduce usage of personal vehicles and work together to make our city a healthier place.")
+ 	update.message.reply_text("The AQI is an index for reporting daily air quality. It tells you how clean or polluted your air is, and what associated health effects might be a concern for you. The AQI focuses on health effects you may experience within a few hours or days after breathing polluted air. By knowing it, we can prevent likely harms to our health, reduce usage of personal vehicles and work together to make our city a healthier place. For learning more about AQI number range and its meanings press /aqiranges")
 
 def aqiranges(update, context):
 	update.message.reply_text('Every category corresponds to a different level of health concern. The six levels of health concern and what they mean are: \n \n' + 'Good: AQI is 0 to 50. Air quality is considered satisfactory, and air pollution poses little or no risk. \n \n' + 'Moderate: AQI is 51 to 100. Air quality is acceptable; however, for some pollutants there may be a moderate health concern for a very small number of people. For example, people who are unusually sensitive to ozone may experience respiratory symptoms. \n \n' + 'Unhealthy for Sensitive Groups: AQI is 101 to 150. Although general public is not likely to be affected at this AQI range, people with lung disease, older adults and children are at a greater risk from exposure to ozone, whereas persons with heart and lung disease, older adults and children are at greater risk from the presence of particles in the air. \n \n' + 'Unhealthy: AQI is 151 to 200. Everyone may begin to experience some adverse health effects, and members of the sensitive groups may experience more serious effects. \n \n' + 'Very Unhealthy: AQI is 201 to 300. This would trigger a health alert signifying that everyone may experience more serious health effects. \n \n' + 'Hazardous: AQI greater than 300. This would trigger a health warnings of emergency conditions. The entire population is more likely to be affected.')
@@ -118,6 +118,12 @@ def airnowcity (city):
 	for i in range (0 , len(stations),2):
 		regs.append(stations2[i])
 		aqis.append(stations2[i+1])
+
+	regstwo=[]	
+	for i in range (0 , len(regs)):
+		text = regs[i]
+		head, sep, tail = text.partition(', Iran')
+		regstwo.append(head)
 
 	fortehran={}
 	for i in range (0 , len(regstwo)):
