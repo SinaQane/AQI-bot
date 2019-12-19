@@ -100,28 +100,33 @@ def airnowcity (city):
 	aqicity = datatag.get('aqi')
 	return (aqicity)
 
-
-
 def regions(update, context):
 	idd = update.message.chat.id
 	dic[idd] = 1
 	update.message.reply_text("Enter a city to get its regions' AQI in a list.")
 
-
 def aircheck (update, context):
 	idd = update.message.chat.id
-	if dic[idd] == 0:
-		cityforcheck = update.message.text
-		aqinow = airnowcity (cityforcheck)
-		airlevelnow = aqilevelcheck(aqinow)
-		message = cityforcheck + " Air Quality Index is " + str(aqinow) + " And It's " + airlevelnow + "."
-		img = open("img" + airlevelnow + ".JPG","rb")
-		update.message.reply_photo(photo=img,caption=message)
+	word = update.message.text
+	request = requests.get('https://api.waqi.info/search/?token='+APIToken+'&keyword=' +word)
+	res = json.loads(request.text)
+	resdic = res.get('data')
+	if resdic == [] :
+		botmessage = "Sorry, We couldn't find: " + word
+		update.message.reply_text(botmessage)
+	else : 
+		if dic[idd] == 0:
+			cityforcheck = update.message.text
+			aqinow = airnowcity (cityforcheck)
+			airlevelnow = aqilevelcheck(aqinow)
+			message = cityforcheck + " Air Quality Index is " + str(aqinow) + " And It's " + airlevelnow + "."
+			img = open("img/" + airlevelnow + ".JPG","rb")
+			update.message.reply_photo(photo=img,caption=message)
 
-	elif dic[idd] == 1:
-		cityforcheck = update.message.text
-		regionslist = airnowregions(cityforcheck)
-		update.message.reply_text(regionslist)
+		elif dic[idd] == 1:
+			cityforcheck = update.message.text
+			regionslist = airnowregions(cityforcheck)
+			update.message.reply_text(regionslist)
 	dic[idd] = 0
 
 def error (update, context):
@@ -132,15 +137,34 @@ def inlinequery(update, context):
 	aqinow = airnowcity(query)
 	airlevelnow = aqilevelcheck(aqinow)
 	airpicword = airlevelnow.replace(" ", "%20")
-	results =[
-		InlineQueryResultArticle(
-			id=uuid4(),
-			title=query,
-			description=airlevelnow,
-			thumb_url='https://github.com/SinaQane/AQI-bot/raw/master/img/'+ airpicword +'.JPG',
-			input_message_content=InputTextMessageContent(
-				message_text= "Air quality index of " + query + " is " + str(aqinow) + " and It's " + airlevelnow))
-			]
+	request = requests.get('https://api.waqi.info/search/?token='+APIToken+'&keyword=' +query)
+	res = json.loads(request.text)
+	resdic = res.get('data')
+	
+	if resdic == [] :
+		results =[
+			InlineQueryResultArticle(
+				id=uuid4(),
+				title=query,
+				description="Not found",
+				thumb_url='https://github.com/SinaQane/AQI-bot/raw/master/img/Not%20found.JPEG',
+				input_message_content=InputTextMessageContent(
+				
+				
+					message_text= "Sorry, We couldn't find: " + query))
+				]		
+	else :
+		results =[
+			InlineQueryResultArticle(
+				id=uuid4(),
+				title=query,
+				description=airlevelnow,
+				thumb_url='https://github.com/SinaQane/AQI-bot/raw/master/img/'+ airpicword +'.JPG',
+				input_message_content=InputTextMessageContent(
+				
+				
+					message_text= "Air quality index of " + query + " is " + str(aqinow) + " and It's " + airlevelnow))
+				]
 
 	update.inline_query.answer(results)
 
