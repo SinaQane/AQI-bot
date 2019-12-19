@@ -96,11 +96,29 @@ def airnowregions (city):
 	return("For " +city+ " regions, we have results below: \n" + finalstr)
 
 def airnowcity (city):
-	request = requests.get('https://api.waqi.info/feed/'+city+'/?token='+APIToken)
-	reqdictype = json.loads(request.text)
-	datatag = reqdictype.get('data')
-	aqicity = datatag.get('aqi')
-	return (aqicity)
+	request = requests.get('https://api.waqi.info/search/?token='+APIToken+'&keyword=' +city)
+	res = json.loads(request.text)
+	resdic = res.get('data')
+	stations =[]
+	for i in range (0,len(resdic)):
+			stations.append (resdic[i].get('station'))
+			if resdic[i].get('aqi') == '-':
+				stations.append ("No Data Available")
+			else:
+				stations.append (resdic[i].get('aqi'))
+
+	stations2=[]
+	for i in range (0 , len(stations),2):
+			stations2.append (stations[i].get('name'))
+			stations2.append (stations[i+1])
+
+	regs=[]
+	aqis=[]
+	for i in range (0 , len(stations),2):
+		regs.append(stations2[i])
+		aqis.append(stations2[i+1])
+	defultaqicity = aqis[0]
+	return (defultaqicity)
 
 def regions(update, context):
 	idd = update.message.chat.id
