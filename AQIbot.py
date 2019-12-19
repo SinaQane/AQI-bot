@@ -78,17 +78,18 @@ def airnowregions (city):
 		regs.append(stations2[i])
 		aqis.append(stations2[i+1])
 
+	#This part is for getting rid of the Persian letters that get mixed up because the API and some devices don't support them properly	
 	regstwo=[]	
 	for i in range (0 , len(regs)):
 		text = regs[i]
 		head, sep, tail = text.partition(', Iran')
 		regstwo.append(head)
-	
+
 	finalset=[]
 	for i in range (0 , len(regstwo)):
 		finalset.append(regstwo[i])
 		finalset.append(aqis[i])
-	
+
 	finalstr = ""
 	for i in range (0 , len(finalset),2):
 			finalstr = finalstr + finalset[i] +" :" + finalset[i+1] +"\n"
@@ -117,8 +118,17 @@ def airnowcity (city):
 	for i in range (0 , len(stations),2):
 		regs.append(stations2[i])
 		aqis.append(stations2[i+1])
-	defultaqicity = aqis[0]
-	return (int(defultaqicity))
+
+	fortehran={}
+	for i in range (0 , len(regstwo)):
+		fortehran[regstwo[i]] = aqis[i]
+
+	#Since most of the users of this bot will be Iranians, I'm making some changes so that the bugs caused by API (for not supporting and knowing Iran's capital that much) don't effect Iranian users. The man air control of Tehran is "Tehran Salamat"
+
+	if city == Tehran or city == tehran:
+		return (int(fortehran["Tehran Salamat"]))
+	else:
+		return (int(aqis[0]))
 
 def regions(update, context):
 	idd = update.message.chat.id
@@ -160,7 +170,7 @@ def inlinequery(update, context):
 	request = requests.get('https://api.waqi.info/search/?token='+APIToken+'&keyword=' +query)
 	res = json.loads(request.text)
 	resdic = res.get('data')
-	
+
 	if resdic == [] :
 		results =[
 			InlineQueryResultArticle(
