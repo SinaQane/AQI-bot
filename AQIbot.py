@@ -147,7 +147,7 @@ def inlinequery(update, context):
 				id=uuid4(),
 				title=query,
 				description="Not found",
-				thumb_url='https://github.com/SinaQane/AQI-bot/raw/master/img/Not%20found.JPEG',
+				thumb_url='https://github.com/SinaQane/AQI-bot/raw/master/img/Not%20Found.JPEG',
 				input_message_content=InputTextMessageContent(
 				
 				
