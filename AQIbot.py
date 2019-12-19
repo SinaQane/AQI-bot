@@ -129,7 +129,7 @@ def airnowcity (city):
 	for i in range (0 , len(regstwo)):
 		fortehran[regstwo[i]] = aqis[i]
 
-	#Since most of the users of this bot will be Iranians, I'm making some changes so that the bugs caused by API (for not supporting and knowing Iran's capital that much) don't effect Iranian users. The man air control of Tehran is "Tehran Salamat"
+	#Since most of the users of this bot will be Iranians, I'm making some changes so that the bugs caused by API (for not supporting and knowing Iran's capital that much) don't effect Iranian users. The main air quality control station of Tehran is "Tehran Salamat"
 
 	if city == 'Tehran' or city == 'tehran':
 		return (int(fortehran["Tehran Salamat"]))
