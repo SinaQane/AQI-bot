@@ -28,10 +28,10 @@ dic={}
 def start(update, context):
 	idd = update.message.chat.id
 	dic [idd] = 0
-	update.message.reply_text("Hello, for getting the Air Quality Index of your city, just send me the city's name, for more info press /info, to get started press /help")
+	update.message.reply_text("Hello, for getting the Air Quality Index of your city, just send me the city's name, for more info press /info, to get started press /help, for getting tge list information of all available regions in your city press /regions")
 
 def help(update, context):
-	update.message.reply_text("For getting the AQI of your city just type its name, for learning more about AQI number range and its meanings press /aqiranges, for getting a list of all regions in your city, press /regions, for further info visit: \n https://github.com/SinaQane/AQI-bot")
+	update.message.reply_text("For getting the AQI of your city just type its name, for learning more about AQI number range and its meanings press /aqiranges, for further info visit: \n https://github.com/SinaQane/AQI-bot")
 
 def info(update, context):
  	update.message.reply_text("The AQI is an index for reporting daily air quality. It tells you how clean or polluted your air is, and what associated health effects might be a concern for you. The AQI focuses on health effects you may experience within a few hours or days after breathing polluted air. By knowing it, we can prevent likely harms to our health, reduce usage of personal vehicles and work together to make our city a healthier place.")
@@ -53,7 +53,7 @@ def aqilevelcheck (aqinumber):
 	elif aqinumber in range (301,501):
 		return ("Hazardous")
 	else:
-		return ("There seems to be an error or the Air Quality Index is out of our range.")
+		return ("Out of our range")
 
 def airnowcity (city):
 	request = requests.get('https://api.waqi.info/feed/'+city+'/?token='+APIToken)
