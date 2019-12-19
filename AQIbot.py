@@ -131,12 +131,13 @@ def inlinequery(update, context):
 	query = update.inline_query.query
 	aqinow = airnowcity(query)
 	airlevelnow = aqilevelcheck(aqinow)
+	airpicword = airlevelnow.replace(" ", "%20")
 	results =[
 		InlineQueryResultArticle(
 			id=uuid4(),
 			title=query,
 			description=airlevelnow,
-			thumb_url='https://github.com/SinaQane/AQI-bot/raw/master/img/'+ airlevelnow +'.JPG',
+			thumb_url='https://github.com/SinaQane/AQI-bot/raw/master/img/'+ airpicword +'.JPG',
 			input_message_content=InputTextMessageContent(
 				message_text= "Air quality index of " + query + " is " + str(aqinow) + " and It's " + airlevelnow))
 			]
