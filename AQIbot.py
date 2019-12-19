@@ -55,15 +55,8 @@ def aqilevelcheck (aqinumber):
 	else:
 		return ("Out of our range")
 
-def airnowcity (city):
-	request = requests.get('https://api.waqi.info/feed/'+city+'/?token='+APIToken)
-	reqdictype = json.loads(request.text)
-	datatag = reqdictype.get('data')
-	aqicity = datatag.get('aqi')
-	return (aqicity)
-
 def airnowregions (city):
-	request = requests.get('https://api.waqi.info/search/?token='+APIToken+'&keyword='+city)
+	request = requests.get('https://api.waqi.info/search/?token='+APIToken+'&keyword=' +city)
 	res = json.loads(request.text)
 	resdic = res.get('data')
 	stations =[]
@@ -79,10 +72,37 @@ def airnowregions (city):
 			stations2.append (stations[i].get('name'))
 			stations2.append (stations[i+1])
 
-	finalstr = ""
+	regs=[]
+	aqis=[]
 	for i in range (0 , len(stations),2):
-			finalstr = finalstr + stations2[i] +" :" + stations2[i+1] +"\n"
-	return("For " + city + " regions, we have results below: \n" + finalstr)
+		regs.append(stations2[i])
+		aqis.append(stations2[i+1])
+
+	regstwo=[]	
+	for i in range (0 , len(regs)):
+		text = regs[i]
+		head, sep, tail = text.partition(', Iran')
+		regstwo.append(head)
+	
+	finalset=[]
+	for i in range (0 , len(regstwo)):
+		finalset.append(regstwo[i])
+		finalset.append(aqis[i])
+	
+	finalstr = ""
+	for i in range (0 , len(finalset),2):
+			finalstr = finalstr + finalset[i] +" :" + finalset[i+1] +"\n"
+		
+	return("For " +city+ " regions, we have results below: \n" + finalstr)
+
+def airnowcity (city):
+	request = requests.get('https://api.waqi.info/feed/'+city+'/?token='+APIToken)
+	reqdictype = json.loads(request.text)
+	datatag = reqdictype.get('data')
+	aqicity = datatag.get('aqi')
+	return (aqicity)
+
+
 
 def regions(update, context):
 	idd = update.message.chat.id
