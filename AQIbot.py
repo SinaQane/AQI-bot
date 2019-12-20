@@ -131,7 +131,7 @@ def airnowcity (city):
 
 	#Since most of the users of this bot will be Iranians, I'm making some changes so that the bugs caused by API (for not supporting and knowing Iran's capital that much) don't effect Iranian users. The main air quality control station of Tehran is "Tehran Salamat"
 
-	if city == 'Tehran' or city == 'tehran':
+	if city == 'Tehran' or city == 'tehran' or city == 'TEHRAN':
 		return (int(fortehran["Tehran Salamat"]))
 	else:
 		return (int(aqis[0]))
