@@ -154,11 +154,15 @@ def aircheck (update, context):
 		if dic[idd] == 0:
 			cityforcheck = update.message.text
 			aqinow = airnowcity (cityforcheck)
-			airlevelnow = aqilevelcheck(aqinow)
-			message = cityforcheck + " Air Quality Index is " + str(aqinow) + " And It's " + airlevelnow + "."
-			img = open("img/" + airlevelnow + ".JPG","rb")
-			update.message.reply_photo(photo=img,caption=message)
-
+			if aqinow == "No Data Available":
+				update.message.reply_text("Sorry, No Data Available for " + cityforcheck)
+			else:
+				airlevelnow = aqilevelcheck(aqinow)
+				message = cityforcheck + " Air Quality Index is " + str(aqinow) + " And It's " + airlevelnow + "."
+				img = open("img/" + airlevelnow + ".JPG","rb")
+				update.message.reply_photo(photo=img,caption=message)
+				
+				
 		elif dic[idd] == 1:
 			cityforcheck = update.message.text
 			regionslist = airnowregions(cityforcheck)
@@ -188,19 +192,31 @@ def inlinequery(update, context):
 				]		
 	else :
 		aqinow = airnowcity(query)
-		airlevelnow = aqilevelcheck(aqinow)
-		airpicword = airlevelnow.replace(" ", "%20")
-		results =[
-			InlineQueryResultArticle(
-				id=uuid4(),
-				title=query,
-				description=airlevelnow,
-				thumb_url='https://github.com/SinaQane/AQI-bot/raw/master/img/'+ airpicword +'.JPG',
-				input_message_content=InputTextMessageContent(
+		if aqinow == "No Data Available":
+			results =[
+				InlineQueryResultArticle(
+					id=uuid4(),
+					title=query,
+					description="Not found",
+					input_message_content=InputTextMessageContent(
 				
 				
-					message_text= "Air quality index of " + query + " is " + str(aqinow) + " and It's " + airlevelnow))
-				]
+						message_text= "Sorry, No Data Available for " + query))
+					]		
+		else:
+			airlevelnow = aqilevelcheck(aqinow)
+			airpicword = airlevelnow.replace(" ", "%20")
+			results =[
+				InlineQueryResultArticle(
+					id=uuid4(),
+					title=query,
+					description=airlevelnow,
+					thumb_url='https://github.com/SinaQane/AQI-bot/raw/master/img/'+ airpicword +'.JPG',
+					input_message_content=InputTextMessageContent(
+				
+				
+						message_text= "Air quality index of " + query + " is " + str(aqinow) + " and It's " + airlevelnow))
+					]
 
 	update.inline_query.answer(results)
 
